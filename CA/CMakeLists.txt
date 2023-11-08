@@ -29,6 +29,7 @@ target_include_directories(COM PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/misc"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/cxxTemplates"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/as"
+    "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/cppStd"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/error"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/ellLib"
@@ -36,6 +37,7 @@ target_include_directories(COM PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/O.Common"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/freeList"
     "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/os/default"
+    "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/os"
     if(WIN32)
       "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/compiler/msvc"
       "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/os/WIN32"
@@ -46,7 +48,7 @@ target_include_directories(COM PUBLIC
       "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/compiler/clang"
       "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi/os/iOS"
     endif()
-    "${CMAKE_CURRENT_SOURCE_DIR}/COM/osi"
+    
 
     # Add any additional directories where COM's header files are located.
 )
@@ -77,15 +79,12 @@ endif()
 if(WIN32)
   # Define Windows-specific options here
   target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
-  target_compile_definitions(CA PRIVATE "EPICS_BYTE_ORDER=EPICS_ENDIAN_LITTLE")
 elseif(UNIX AND NOT APPLE)
   # Define Linux-specific options here
   target_compile_definitions(CA PRIVATE "CA_LINUX_BUILD")
-  target_compile_definitions(CA PRIVATE "EPICS_BYTE_ORDER=EPICS_ENDIAN_BIG")
 elseif(APPLE)
   # Define macOS-specific options here
   target_compile_definitions(CA PRIVATE "CA_MAC_BUILD")
-  target_compile_definitions(CA PRIVATE "EPICS_BYTE_ORDER=EPICS_ENDIAN_BIG")
 endif()
 
 set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
