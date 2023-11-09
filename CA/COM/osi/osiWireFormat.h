@@ -252,8 +252,10 @@ inline void AlignedWireSet ( const T & src, T & dst )
     dst = dstu._o;
 }
 
-#ifndef WIN32
-#include "osdWireFormat.h"
-#endif // not WIN32
+#ifdef _WIN32
+  #include "../default/osdWireFormat.h"
+#elif 
+  #include "osdWireFormat.h"
+#endif // WIN32
 
 #endif // osiWireFormat

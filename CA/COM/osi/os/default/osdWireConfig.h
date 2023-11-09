@@ -13,7 +13,12 @@
 
 /* if compilation fails because this wasnt found then you may need to define an OS 
    specific osdWireConfig.h */
+#ifdef _WIN32
+#include "../WIN32/osdWireConfig.h"
+#elif 
 #include <sys/param.h>
+#endif // WIN32
+
 
 #ifdef __BYTE_ORDER
 #   if __BYTE_ORDER == __LITTLE_ENDIAN
