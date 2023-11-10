@@ -38,7 +38,6 @@ file(GLOB COM_SOURCE_FILES
   "${CA_BASE}/COM/osi/compiler/default/*.c"
   "${CA_BASE}/COM/osi/os/default/*.c"
   "${CA_BASE}/COM/osi/os/default/*.cpp"
-  #"${CA_BASE}/COM/osi/os/defualt/*.c"
   "${CA_BASE}/COM/pool/*.c"
   "${CA_BASE}/COM/ring/*.c"
   "${CA_BASE}/COM/taskwd/*.c"
@@ -66,7 +65,6 @@ file(GLOB COM_HEADER_FILES
   endif()
   "${CA_BASE}/COM/osi/compiler/default/*.h"
   "${CA_BASE}/COM/osi/os/default/*.h"
-  #"${CA_BASE}/COM/osi/os/defualt/*.h"
   "${CA_BASE}/COM/pool/*.h"
   "${CA_BASE}/COM/ring/*.h"
   "${CA_BASE}/COM/taskwd/*.h"
@@ -78,7 +76,7 @@ message(STATUS "TZ: COM Source files: ${COM_SOURCE_FILES}")
 message(STATUS "TZ: COM Header files: ${COM_HEADER_FILES}")
 
 # Add the COM library target
-add_library(COM STATIC ${COM_SOURCE_FILES} ${COM_HEADER_FILES})
+add_library(COM SHARED ${COM_SOURCE_FILES} ${COM_HEADER_FILES})
 
 # Manually add directories to the COM target
 target_include_directories(COM PUBLIC "${CA_BASE}/COM/as")
@@ -126,7 +124,7 @@ message(STATUS "TZ: CA Source files: ${CA_SOURCE_FILES}")
 message(STATUS "TZ: CA Header files: ${CA_HEADER_FILES}")
 
 # Add the CA library target
-add_library(CA STATIC ${CA_SOURCE_FILES} ${CA_HEADER_FILES})
+add_library(CA SHARED ${CA_SOURCE_FILES} ${CA_HEADER_FILES})
 
 # Link CA against COM
 target_link_libraries(CA PRIVATE COM)
@@ -134,9 +132,16 @@ target_link_libraries(CA PRIVATE COM)
 # Platform-specific compiler options and preprocessor definitions
 if(WIN32)
   # Define Windows-specific options here
-  add_definitions(-D__BYTE_ORDER=__LITTLE_ENDIAN)
+  #add_definitions(-D__BYTE_ORDER=__LITTLE_ENDIAN)
   target_compile_definitions(COM PRIVATE "COM_WINDOWS_BUILD")
+  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
+  target_compile_definitions(COM PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
+
   target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
+  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
+  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
 elseif(UNIX AND NOT APPLE)
   # Define Linux-specific options here
   target_compile_definitions(COM PRIVATE "COM_LINUX_BUILD")
