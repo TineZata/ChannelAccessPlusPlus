@@ -1,5 +1,4 @@
-﻿# CMakeList.txt : CMake project for CA, include source and define
-# project specific logic here.
+﻿# project specific logic here.
 #
 cmake_minimum_required (VERSION 3.8)
 
@@ -17,7 +16,6 @@ set(COM_BASE "${CMAKE_CURRENT_SOURCE_DIR}/COM")
 
 # Define source files and headers for COM using file globbing
 file(GLOB COM_SOURCE_FILES 
-  #"${COM_BASE}/as/*.c"
   "${COM_BASE}/bucketLib/*.c"
   "${COM_BASE}/calc/*.c"
   "${COM_BASE}/cvtFast/*.c"
@@ -31,8 +29,16 @@ file(GLOB COM_SOURCE_FILES
   "${COM_BASE}/freeList/*.c"
   "${COM_BASE}/gpHash/*.c"
   "${COM_BASE}/macLib/*.c"
-  "${COM_BASE}/misc/*.cpp"
-  "${COM_BASE}/misc/*.c"
+  "${COM_BASE}/misc/aToIPAddr.c"
+  "${COM_BASE}/misc/adjustment.c"
+  "${COM_BASE}/misc/cantProceed.c"
+  "${COM_BASE}/misc/epicsConvert.c"
+  "${COM_BASE}/misc/epicsExit.c"
+  "${COM_BASE}/misc/epicsStdlib.c"
+  "${COM_BASE}/misc/epicsString.c"
+  "${COM_BASE}/misc/truncateFile.c"
+  "${COM_BASE}/misc/ipAddrToAsciiAsynchronous.cpp"
+  "${COM_BASE}/misc/epicsUnitTest.c"
   "${COM_BASE}/O.Common/*.c"
   "${COM_BASE}/osi/epicsThread.cpp"
   "${COM_BASE}/osi/epicsMutex.cpp"
@@ -48,9 +54,6 @@ file(GLOB COM_SOURCE_FILES
   if(WIN32)
   "${COM_BASE}/osi/os/WIN32/*.c"
   endif()
- # "${COM_BASE}/osi/compiler/default/*.c"
-  #"${COM_BASE}/osi/os/default/*.c"
-  #"${COM_BASE}/osi/os/default/*.cpp"
   "${COM_BASE}/pool/*.c"
   "${COM_BASE}/ring/*.c"
   "${COM_BASE}/taskwd/*.c"
@@ -58,7 +61,6 @@ file(GLOB COM_SOURCE_FILES
   "${COM_BASE}/iocsh/*.c"
 )
 file(GLOB COM_HEADER_FILES 
-  #"${COM_BASE}/as/*.h"
   "${COM_BASE}/bucketLib/*.h"
   "${COM_BASE}/calc/*.h"
   "${COM_BASE}/cppStd/*.h"
@@ -79,7 +81,22 @@ file(GLOB COM_HEADER_FILES
   "${COM_BASE}/freeList/*.h"
   "${COM_BASE}/gpHash/*.h"
   "${COM_BASE}/macLib/*.h"
-  "${COM_BASE}/misc/*.h"
+  "${COM_BASE}/misc/adjustment.h"
+  "${COM_BASE}/misc/cantProceed.h"
+  "${COM_BASE}/misc/dbDefs.h"
+  "${COM_BASE}/misc/epicsConvert.h"
+  "${COM_BASE}/misc/epicsExit.h"
+  "${COM_BASE}/misc/epicsStdlib.h"
+  "${COM_BASE}/misc/epicsString.h"
+  "${COM_BASE}/misc/epicsTypes.h"
+  "${COM_BASE}/misc/shareLib.h"
+  "${COM_BASE}/misc/epicsExport.h"
+  "${COM_BASE}/misc/unixFileName.h"
+  "${COM_BASE}/misc/locationException.h"
+  "${COM_BASE}/misc/ipAddrToAsciiAsynchronous.h"
+  "${COM_BASE}/misc/compilerDependencies.h"
+  "${COM_BASE}/misc/epicsUnitTest.h"
+  "${COM_BASE}/misc/testMain.h"
   "${COM_BASE}/O.Common/*.h"
   "${COM_BASE}/osi/osiSock.h"
   "${COM_BASE}/osi/epicsInterrupt.h"
@@ -106,8 +123,6 @@ file(GLOB COM_HEADER_FILES
   if(WIN32)
   "${COM_BASE}/osi/os/WIN32/*.h"
   endif()
-  "${COM_BASE}/osi/compiler/default/*.h"
-  "${COM_BASE}/osi/os/default/*.h"
   "${COM_BASE}/pool/*.h"
   "${COM_BASE}/ring/*.h"
   "${COM_BASE}/taskwd/*.h"
@@ -226,12 +241,14 @@ if(WIN32)
   # Define Windows-specific options here
   target_compile_definitions(COM PRIVATE "COM_WINDOWS_BUILD")
   target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
+  target_compile_definitions(COM PRIVATE "epicsExportSharedSymbols")
   target_compile_definitions(COM PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
   set_target_properties(COM PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
   target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
   target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
+  target_compile_definitions(CA PRIVATE "epicsExportSharedSymbols")
   target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
   set_target_properties(CA PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
@@ -246,8 +263,14 @@ elseif(APPLE)
 endif()
 
 # Set the LINKER_LANGUAGE property for the target
-set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
+#set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
+#set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
+
+# Enable Hot Reload for MSVC compilers if supported.
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+endif()
 
 # If you have any libraries to link against, use target_link_libraries()
 # Example:
