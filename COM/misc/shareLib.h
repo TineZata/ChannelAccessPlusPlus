@@ -111,18 +111,11 @@
  * dllexport keywords if this is a shared library build of base under WIN32.
  */
 
-#   if defined(epicsExportSharedSymbols)
 #       if defined(EPICS_BUILD_DLL)
 #           define epicsShareExtern __declspec(dllexport) extern
 #           define epicsShareClass  __declspec(dllexport)
 #           define epicsShareFunc   __declspec(dllexport)
-#       else
-#           define epicsShareExtern extern
-#           define epicsShareClass
-#           define epicsShareFunc
-#       endif
-#   else
-#       if defined(EPICS_CALL_DLL)
+#       elif defined(EPICS_CALL_DLL)
 #           define epicsShareExtern __declspec(dllimport) extern
 #           define epicsShareClass  __declspec(dllimport)
 #           define epicsShareFunc   __declspec(dllimport)
@@ -131,7 +124,7 @@
 #           define epicsShareClass
 #           define epicsShareFunc
 #       endif
-#   endif
+
 #   define epicsShareDef 
 #   define epicsShareAPI __stdcall /* function removes arguments */
 #   define READONLY const

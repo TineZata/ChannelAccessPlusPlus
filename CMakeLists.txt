@@ -2,9 +2,11 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
+# For verbose output during build, uncomment the following line
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 # Define the project name and the language you are using (C++)
 project ("CA" LANGUAGES CXX)
-project ("COM" LANGUAGES CXX)
 
 # Set the C++ standard for the project
 set(CMAKE_CXX_STANDARD 20)
@@ -170,61 +172,97 @@ target_include_directories(COM PUBLIC "${COM_BASE}/iocsh")
 
 # Define source files and headers for CA using file globbing
 file(GLOB CA_SOURCE_FILES
+"${CA_BASE}/access.cpp"
+"${CA_BASE}/acctstRegister.cpp"
+"${CA_BASE}/baseNMIU.cpp"
+"${CA_BASE}/bhe.cpp"
+"${CA_BASE}/ca_client_context.cpp"
 "${CA_BASE}/cac.cpp"
 "${CA_BASE}/cacChannel.cpp"
 "${CA_BASE}/cacChannelNotify.cpp"
 "${CA_BASE}/cacContextNotify.cpp"
 "${CA_BASE}/cacReadNotify.cpp"
-"${CA_BASE}/cacWriteNotify.cpp"
 "${CA_BASE}/cacStateNotify.cpp"
-"${CA_BASE}/access.cpp"
-"${CA_BASE}/iocinf.cpp"
+"${CA_BASE}/cacWriteNotify.cpp"
+"${CA_BASE}/CASG.cpp"
+"${CA_BASE}/comBuf.cpp"
+"${CA_BASE}/comQueRecv.cpp"
+"${CA_BASE}/comQueSend.cpp"
 "${CA_BASE}/convert.cpp"
-"${CA_BASE}/test_event.cpp"
-"${CA_BASE}/repeater.cpp"
-"${CA_BASE}/searchTimer.cpp"
 "${CA_BASE}/disconnectGovernorTimer.cpp"
-"${CA_BASE}/repeaterSubscribeTimer.cpp"
-"${CA_BASE}/baseNMIU.cpp"
-"${CA_BASE}/nciu.cpp"
-"${CA_BASE}/netiiu.cpp"
-"${CA_BASE}/udpiiu.cpp"
-"${CA_BASE}/tcpiiu.cpp"
-"${CA_BASE}/noopiiu.cpp"
-"${CA_BASE}/netReadNotifyIO.cpp"
-"${CA_BASE}/netWriteNotifyIO.cpp"
-"${CA_BASE}/netSubscription.cpp"
-"${CA_BASE}/tcpSendWatchdog.cpp"
-"${CA_BASE}/tcpRecvWatchdog.cpp"
-"${CA_BASE}/bhe.cpp"
-"${CA_BASE}/ca_client_context.cpp"
-"${CA_BASE}/oldChannelNotify.cpp"
-"${CA_BASE}/oldSubscription.cpp"
 "${CA_BASE}/getCallback.cpp"
 "${CA_BASE}/getCopy.cpp"
+"${CA_BASE}/hostNameCache.cpp"
+"${CA_BASE}/iocinf.cpp"
+"${CA_BASE}/localHostName.cpp"
+"${CA_BASE}/msgForMultiplyDefinedPV.cpp"
+"${CA_BASE}/nciu.cpp"
+"${CA_BASE}/netiiu.cpp"
+"${CA_BASE}/netReadNotifyIO.cpp"
+"${CA_BASE}/netSubscription.cpp"
+"${CA_BASE}/netWriteNotifyIO.cpp"
+"${CA_BASE}/noopiiu.cpp"
+"${CA_BASE}/oldChannelNotify.cpp"
+"${CA_BASE}/oldSubscription.cpp"
 "${CA_BASE}/putCallback.cpp"
-"${CA_BASE}/syncgrp.cpp"
-"${CA_BASE}/CASG.cpp"
+"${CA_BASE}/repeater.cpp"
+"${CA_BASE}/repeaterSubscribeTimer.cpp"
+"${CA_BASE}/searchTimer.cpp"
 "${CA_BASE}/syncGroupNotify.cpp"
 "${CA_BASE}/syncGroupReadNotify.cpp"
 "${CA_BASE}/syncGroupWriteNotify.cpp"
-"${CA_BASE}/localHostName.cpp"
-"${CA_BASE}/comQueRecv.cpp"
-"${CA_BASE}/comQueSend.cpp"
-"${CA_BASE}/comBuf.cpp"
-"${CA_BASE}/hostNameCache.cpp"
-"${CA_BASE}/msgForMultiplyDefinedPV.cpp"
+"${CA_BASE}/syncgrp.cpp"
+"${CA_BASE}/tcpiiu.cpp"
+"${CA_BASE}/tcpRecvThread.cpp"
+"${CA_BASE}/tcpRecvWatchdog.cpp"
+"${CA_BASE}/tcpSendWatchdog.cpp"
+"${CA_BASE}/templateInstances.cpp"
+"${CA_BASE}/test_event.cpp"
+"${CA_BASE}/udpiiu.cpp"
+
 )
 
 file(GLOB CA_HEADER_FILES 
+"${CA_BASE}/addrList.h"
+"${CA_BASE}/autoPtrDestroy.h"
+"${CA_BASE}/autoPtrFreeList.h"
+"${CA_BASE}/autoPtrRecycle.h"
+"${CA_BASE}/bhe.h"
+"${CA_BASE}/cac.h"
+"${CA_BASE}/cacIO.h"
 "${CA_BASE}/cadef.h"
+"${CA_BASE}/caDiagnostics.h"
 "${CA_BASE}/caerr.h"
 "${CA_BASE}/caeventmask.h"
 "${CA_BASE}/caProto.h"
+"${CA_BASE}/caServerID.h"
+"${CA_BASE}/comBuf.h"
+"${CA_BASE}/comQueRecv.h"
+"${CA_BASE}/comQueSend.h"
 "${CA_BASE}/db_access.h"
-"${CA_BASE}/addrList.h"
-"${CA_BASE}/cacIO.h"
-"${CA_BASE}/caDiagnostics.h"
+"${CA_BASE}/disconnectGovernorTimer.h"
+"${CA_BASE}/hostNameCache.h"
+"${CA_BASE}/inetAddrID.h"
+"${CA_BASE}/iocinf.h"
+"${CA_BASE}/localHostName.h"
+"${CA_BASE}/msgForMultiplyDefinedPV.h"
+"${CA_BASE}/nciu.h"
+"${CA_BASE}/net_convert.h"
+"${CA_BASE}/netiiu.h"
+"${CA_BASE}/netIO.h"
+"${CA_BASE}/noopiiu.h"
+"${CA_BASE}/oldAccess.h"
+"${CA_BASE}/repeaterClient.h"
+"${CA_BASE}/repeaterSubscribeTimer.h"
+"${CA_BASE}/SearchDest.h"
+"${CA_BASE}/searchTimer.h"
+"${CA_BASE}/sgAutoPtr.h"
+"${CA_BASE}/syncGroup.h"
+"${CA_BASE}/topRecvWatchdog.h"
+"${CA_BASE}/topSendWatchdog.h"
+"${CA_BASE}/ucx.h"
+"${CA_BASE}/udpiiu.h"
+"${CA_BASE}/virtualCircuit.h"
 )
 
 # Add the CA library target
@@ -241,15 +279,13 @@ if(WIN32)
   # Define Windows-specific options here
   target_compile_definitions(COM PRIVATE "COM_WINDOWS_BUILD")
   target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
-  target_compile_definitions(COM PRIVATE "epicsExportSharedSymbols")
-  target_compile_definitions(COM PRIVATE "EPICS_CALL_DLL")
+  #target_compile_definitions(COM PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
   set_target_properties(COM PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
   target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
   target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
-  target_compile_definitions(CA PRIVATE "epicsExportSharedSymbols")
-  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  #target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
   set_target_properties(CA PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 elseif(UNIX AND NOT APPLE)
@@ -263,8 +299,8 @@ elseif(APPLE)
 endif()
 
 # Set the LINKER_LANGUAGE property for the target
-#set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
-#set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -276,8 +312,7 @@ endif()
 # Example:
 # target_link_libraries(COM PRIVATE some_other_library)
 
-# For verbose output during build, uncomment the following line
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+
 
 # If there are specific compile options you need, you can set them for your target
 # Example:
