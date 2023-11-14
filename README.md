@@ -1,2 +1,2 @@
 # ChannelAccessPlusPlus
-EPICS CA and Com C++ libraries for dotnet build
+EPICS CA and Com C++ libraries for crossplatform build using CMake
