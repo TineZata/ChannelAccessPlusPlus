@@ -43,6 +43,9 @@ set(COM_SOURCE_FILES
   
   "${COM_BASE}/error/errlog.c"
   "${COM_BASE}/error/errSymLib.c"
+
+  "${COM_BASE}/fdmgr/fdManager.cpp"
+  "${COM_BASE}/fdmgr/fdmgr.cpp"
   
   "${COM_BASE}/freeList/freeListLib.c"
   
@@ -172,6 +175,9 @@ set(COM_HEADER_FILES
   "${COM_BASE}/error/errMdef.h"
   "${COM_BASE}/error/error.h"
   "${COM_BASE}/error/errSymTbl.h"
+
+  "${COM_BASE}/fdmgr/fdManager.h"
+  "${COM_BASE}/fdmgr/fdmgr.h"
   
   "${COM_BASE}/freeList/freeList.h"
   
@@ -284,6 +290,7 @@ target_include_directories(COM PUBLIC "${COM_BASE}/dbmf")
 target_include_directories(COM PUBLIC "${COM_BASE}/ellLib")
 target_include_directories(COM PUBLIC "${COM_BASE}/env")
 target_include_directories(COM PUBLIC "${COM_BASE}/error")
+target_include_directories(COM PUBLIC "${COM_BASE}/fdmgr")
 target_include_directories(COM PUBLIC "${COM_BASE}/freeList")
 target_include_directories(COM PUBLIC "${COM_BASE}/gpHash")
 target_include_directories(COM PUBLIC "${COM_BASE}/iocsh")
@@ -311,107 +318,109 @@ target_include_directories(COM PUBLIC "${COM_BASE}/timer")
 target_include_directories(COM PUBLIC "${COM_BASE}/iocsh")
 
 # Define source files and headers for CA using file globbing
-#set(CA_SOURCE_FILES
-#"${CA_BASE}/access.cpp"
-#"${CA_BASE}/acctstRegister.cpp"
-#"${CA_BASE}/baseNMIU.cpp"
-#"${CA_BASE}/bhe.cpp"
-#"${CA_BASE}/ca_client_context.cpp"
-#"${CA_BASE}/cac.cpp"
-#"${CA_BASE}/cacChannel.cpp"
-#"${CA_BASE}/cacChannelNotify.cpp"
-#"${CA_BASE}/cacContextNotify.cpp"
-#"${CA_BASE}/cacReadNotify.cpp"
-#"${CA_BASE}/cacStateNotify.cpp"
-#"${CA_BASE}/cacWriteNotify.cpp"
-#"${CA_BASE}/CASG.cpp"
-#"${CA_BASE}/comBuf.cpp"
-#"${CA_BASE}/comQueRecv.cpp"
-#"${CA_BASE}/comQueSend.cpp"
-#"${CA_BASE}/convert.cpp"
-#"${CA_BASE}/disconnectGovernorTimer.cpp"
-#"${CA_BASE}/getCallback.cpp"
-#"${CA_BASE}/getCopy.cpp"
-#"${CA_BASE}/hostNameCache.cpp"
-#"${CA_BASE}/iocinf.cpp"
-#"${CA_BASE}/localHostName.cpp"
-#"${CA_BASE}/msgForMultiplyDefinedPV.cpp"
-#"${CA_BASE}/nciu.cpp"
-#"${CA_BASE}/netiiu.cpp"
-#"${CA_BASE}/netReadNotifyIO.cpp"
-#"${CA_BASE}/netSubscription.cpp"
-#"${CA_BASE}/netWriteNotifyIO.cpp"
-#"${CA_BASE}/noopiiu.cpp"
-#"${CA_BASE}/oldChannelNotify.cpp"
-#"${CA_BASE}/oldSubscription.cpp"
-#"${CA_BASE}/putCallback.cpp"
-#"${CA_BASE}/repeater.cpp"
-#"${CA_BASE}/repeaterSubscribeTimer.cpp"
-#"${CA_BASE}/searchTimer.cpp"
-#"${CA_BASE}/syncGroupNotify.cpp"
-#"${CA_BASE}/syncGroupReadNotify.cpp"
-#"${CA_BASE}/syncGroupWriteNotify.cpp"
-#"${CA_BASE}/syncgrp.cpp"
-#"${CA_BASE}/tcpiiu.cpp"
-#"${CA_BASE}/tcpRecvThread.cpp"
-#"${CA_BASE}/tcpRecvWatchdog.cpp"
-#"${CA_BASE}/tcpSendWatchdog.cpp"
-#"${CA_BASE}/templateInstances.cpp"
-#"${CA_BASE}/test_event.cpp"
-#"${CA_BASE}/udpiiu.cpp"
-#)
+set(CA_SOURCE_FILES
+"${CA_BASE}/access.cpp"
+"${CA_BASE}/acctstRegister.cpp"
+"${CA_BASE}/acctstMain.c"
+"${CA_BASE}/acctst.c"
+"${CA_BASE}/baseNMIU.cpp"
+"${CA_BASE}/bhe.cpp"
+"${CA_BASE}/ca_client_context.cpp"
+"${CA_BASE}/cac.cpp"
+"${CA_BASE}/cacChannel.cpp"
+"${CA_BASE}/cacChannelNotify.cpp"
+"${CA_BASE}/cacContextNotify.cpp"
+"${CA_BASE}/cacReadNotify.cpp"
+"${CA_BASE}/cacStateNotify.cpp"
+"${CA_BASE}/cacWriteNotify.cpp"
+"${CA_BASE}/CASG.cpp"
+"${CA_BASE}/comBuf.cpp"
+"${CA_BASE}/comQueRecv.cpp"
+"${CA_BASE}/comQueSend.cpp"
+"${CA_BASE}/convert.cpp"
+"${CA_BASE}/disconnectGovernorTimer.cpp"
+"${CA_BASE}/getCallback.cpp"
+"${CA_BASE}/getCopy.cpp"
+"${CA_BASE}/hostNameCache.cpp"
+"${CA_BASE}/iocinf.cpp"
+"${CA_BASE}/localHostName.cpp"
+"${CA_BASE}/msgForMultiplyDefinedPV.cpp"
+"${CA_BASE}/nciu.cpp"
+"${CA_BASE}/netiiu.cpp"
+"${CA_BASE}/netReadNotifyIO.cpp"
+"${CA_BASE}/netSubscription.cpp"
+"${CA_BASE}/netWriteNotifyIO.cpp"
+"${CA_BASE}/noopiiu.cpp"
+"${CA_BASE}/oldChannelNotify.cpp"
+"${CA_BASE}/oldSubscription.cpp"
+"${CA_BASE}/putCallback.cpp"
+"${CA_BASE}/repeater.cpp"
+"${CA_BASE}/repeaterSubscribeTimer.cpp"
+"${CA_BASE}/searchTimer.cpp"
+"${CA_BASE}/syncGroupNotify.cpp"
+"${CA_BASE}/syncGroupReadNotify.cpp"
+"${CA_BASE}/syncGroupWriteNotify.cpp"
+"${CA_BASE}/syncgrp.cpp"
+"${CA_BASE}/tcpiiu.cpp"
+"${CA_BASE}/tcpRecvThread.cpp"
+"${CA_BASE}/tcpRecvWatchdog.cpp"
+"${CA_BASE}/tcpSendWatchdog.cpp"
+"${CA_BASE}/templateInstances.cpp"
+"${CA_BASE}/test_event.cpp"
+"${CA_BASE}/udpiiu.cpp"
+)
 
-#set(CA_HEADER_FILES 
-#"${CA_BASE}/addrList.h"
-#"${CA_BASE}/autoPtrDestroy.h"
-#"${CA_BASE}/autoPtrFreeList.h"
-#"${CA_BASE}/autoPtrRecycle.h"
-#"${CA_BASE}/bhe.h"
-#"${CA_BASE}/cac.h"
-#"${CA_BASE}/cacIO.h"
-#"${CA_BASE}/cadef.h"
-#"${CA_BASE}/caDiagnostics.h"
-#"${CA_BASE}/caerr.h"
-#"${CA_BASE}/caeventmask.h"
-#"${CA_BASE}/caProto.h"
-#"${CA_BASE}/caServerID.h"
-#"${CA_BASE}/comBuf.h"
-#"${CA_BASE}/comQueRecv.h"
-#"${CA_BASE}/comQueSend.h"
-#"${CA_BASE}/db_access.h"
-#"${CA_BASE}/disconnectGovernorTimer.h"
-#"${CA_BASE}/hostNameCache.h"
-#"${CA_BASE}/inetAddrID.h"
-#"${CA_BASE}/iocinf.h"
-#"${CA_BASE}/localHostName.h"
-#"${CA_BASE}/msgForMultiplyDefinedPV.h"
-#"${CA_BASE}/nciu.h"
-#"${CA_BASE}/net_convert.h"
-#"${CA_BASE}/netiiu.h"
-#"${CA_BASE}/netIO.h"
-#"${CA_BASE}/noopiiu.h"
-#"${CA_BASE}/oldAccess.h"
-#"${CA_BASE}/repeaterClient.h"
-#"${CA_BASE}/repeaterSubscribeTimer.h"
-#"${CA_BASE}/SearchDest.h"
-#"${CA_BASE}/searchTimer.h"
-#"${CA_BASE}/sgAutoPtr.h"
-#"${CA_BASE}/syncGroup.h"
-#"${CA_BASE}/topRecvWatchdog.h"
-#"${CA_BASE}/topSendWatchdog.h"
-#"${CA_BASE}/ucx.h"
-#"${CA_BASE}/udpiiu.h"
-#"${CA_BASE}/virtualCircuit.h"
-#)
+set(CA_HEADER_FILES 
+"${CA_BASE}/addrList.h"
+"${CA_BASE}/autoPtrDestroy.h"
+"${CA_BASE}/autoPtrFreeList.h"
+"${CA_BASE}/autoPtrRecycle.h"
+"${CA_BASE}/bhe.h"
+"${CA_BASE}/cac.h"
+"${CA_BASE}/cacIO.h"
+"${CA_BASE}/cadef.h"
+"${CA_BASE}/caDiagnostics.h"
+"${CA_BASE}/caerr.h"
+"${CA_BASE}/caeventmask.h"
+"${CA_BASE}/caProto.h"
+"${CA_BASE}/caServerID.h"
+"${CA_BASE}/comBuf.h"
+"${CA_BASE}/comQueRecv.h"
+"${CA_BASE}/comQueSend.h"
+"${CA_BASE}/db_access.h"
+"${CA_BASE}/disconnectGovernorTimer.h"
+"${CA_BASE}/hostNameCache.h"
+"${CA_BASE}/inetAddrID.h"
+"${CA_BASE}/iocinf.h"
+"${CA_BASE}/localHostName.h"
+"${CA_BASE}/msgForMultiplyDefinedPV.h"
+"${CA_BASE}/nciu.h"
+"${CA_BASE}/net_convert.h"
+"${CA_BASE}/netiiu.h"
+"${CA_BASE}/netIO.h"
+"${CA_BASE}/noopiiu.h"
+"${CA_BASE}/oldAccess.h"
+"${CA_BASE}/repeaterClient.h"
+"${CA_BASE}/repeaterSubscribeTimer.h"
+"${CA_BASE}/SearchDest.h"
+"${CA_BASE}/searchTimer.h"
+"${CA_BASE}/sgAutoPtr.h"
+"${CA_BASE}/syncGroup.h"
+"${CA_BASE}/tcpRecvWatchdog.h"
+"${CA_BASE}/tcpSendWatchdog.h"
+"${CA_BASE}/ucx.h"
+"${CA_BASE}/udpiiu.h"
+"${CA_BASE}/virtualCircuit.h"
+)
 
 # Add the CA library target
-#add_library(CA SHARED ${CA_SOURCE_FILES} ${CA_HEADER_FILES})
+add_library(CA SHARED ${CA_SOURCE_FILES} ${CA_HEADER_FILES})
 
 # Manually add directories to the CA target
-#target_include_directories(CA PUBLIC "${CA_BASE}")
+target_include_directories(CA PUBLIC "${CA_BASE}")
 
 # Link CA against COM
-#target_link_libraries(CA PRIVATE COM)
+target_link_libraries(CA PRIVATE COM)
 
 # Platform-specific compiler options and preprocessor definitions
 if(WIN32)
@@ -423,24 +432,25 @@ if(WIN32)
   set_target_properties(COM PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
   target_link_libraries(COM PRIVATE Ws2_32)
 
-#  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
-#  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
+  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
   #target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
-#  target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
-#  set_target_properties(CA PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+  target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
+  set_target_properties(CA PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+  target_link_libraries(CA PRIVATE Ws2_32)
 elseif(UNIX AND NOT APPLE)
   # Define Linux-specific options here
   target_compile_definitions(COM PRIVATE "COM_LINUX_BUILD")
-#  target_compile_definitions(CA PRIVATE "CA_LINUX_BUILD")
+  target_compile_definitions(CA PRIVATE "CA_LINUX_BUILD")
 elseif(APPLE)
   # Define macOS-specific options here
   target_compile_definitions(COM PRIVATE "COM_MAC_BUILD")
-#  target_compile_definitions(CA PRIVATE "CA_MAC_BUILD")
+  target_compile_definitions(CA PRIVATE "CA_MAC_BUILD")
 endif()
 
 # Set the LINKER_LANGUAGE property for the target
 set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
-#set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
