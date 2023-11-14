@@ -87,8 +87,16 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/osi/epicsThread.cpp"
   "${COM_BASE}/osi/epicsTime.cpp"
   "${COM_BASE}/osi/osiClockTime.c"
-  "${COM_BASE}/osi/osiNTPTime.c"
+  #"${COM_BASE}/osi/osiNTPTime.c"
   "${COM_BASE}/osi/osiSock.c"
+  "${COM_BASE}/osi/os/default/osdInterrupt.c"
+  "${COM_BASE}/osi/os/default/epicsReadline.c"
+  "${COM_BASE}/osi/os/default/osdMessageQueue.cpp"
+  "${COM_BASE}/osi/os/default/osdFindAddr.c"
+  "${COM_BASE}/osi/os/default/devLibVMEOSD.c"
+  "${COM_BASE}/osi/os/default/osdSpin.c"
+  "${COM_BASE}/osi/os/default/osdThreadHooks.c"
+  "${COM_BASE}/osi/os/default/osdAssert.c"
   
   "${COM_BASE}/pool/poolJob.c"
   "${COM_BASE}/pool/threadPool.c"
@@ -219,11 +227,14 @@ set(COM_HEADER_FILES
   "${COM_BASE}/osi/epicsTime.h"
   "${COM_BASE}/osi/generalTimeSup.h"
   "${COM_BASE}/osi/osiClockTime.h"
-  "${COM_BASE}/osi/osiNTPTime.h"
+  #"${COM_BASE}/osi/osiNTPTime.h"
   "${COM_BASE}/osi/osiPoolStatus.h"
   "${COM_BASE}/osi/osiProcess.h"
   "${COM_BASE}/osi/osiSock.h"
   "${COM_BASE}/osi/osiWireFormat.h"
+  "${COM_BASE}/osi/os/default/osdInterrupt.h"
+  "${COM_BASE}/osi/os/default/epicsReadline.h"
+  "${COM_BASE}/osi/os/default/osdMessageQueue.h"
 
   "${COM_BASE}/pool/poolPriv.h"
 
@@ -410,6 +421,7 @@ if(WIN32)
   target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(COM PRIVATE "COM_WINDOWS_BUILD")
   set_target_properties(COM PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+  target_link_libraries(COM PRIVATE Ws2_32)
 
 #  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
 #  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
