@@ -25,14 +25,14 @@ set(COM_SOURCE_FILES
 
   "${COM_BASE}/bucketLib/bucketLib.c"
   
-  "${COM_BASE}/calc/calcPerform.c"
   "${COM_BASE}/calc/postfix.c"
+  "${COM_BASE}/calc/calcPerform.c"
   
   "${COM_BASE}/cvtFast/cvtFast.c"
   
-  "${COM_BASE}/cxxTemplates/resourceLib.cpp"
-  "${COM_BASE}/cxxTemplates/epicsOnce.cpp"
-  "${COM_BASE}/cxxTemplates/epicsSingletonMutex.cpp"
+  #"${COM_BASE}/cxxTemplates/resourceLib.cpp"
+  #"${COM_BASE}/cxxTemplates/epicsOnce.cpp"
+  #"${COM_BASE}/cxxTemplates/epicsSingletonMutex.cpp"
   
   "${COM_BASE}/dbmf/dbmf.c"
   
@@ -61,18 +61,18 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/macLib/macCore.c"
   "${COM_BASE}/macLib/macEnv.c"
   "${COM_BASE}/macLib/macUtil.c"
-
-  "${COM_BASE}/misc/adjustment.c"
+  
   "${COM_BASE}/misc/alarmString.c"
   "${COM_BASE}/misc/aToIPAddr.c"
+  "${COM_BASE}/misc/adjustment.c"
   "${COM_BASE}/misc/cantProceed.c"
   "${COM_BASE}/misc/epicsConvert.c"
   "${COM_BASE}/misc/epicsExit.c"
   "${COM_BASE}/misc/epicsStdlib.c"
   "${COM_BASE}/misc/epicsString.c"
-  "${COM_BASE}/misc/epicsUnitTest.c"
-  "${COM_BASE}/misc/ipAddrToAsciiAsynchronous.cpp"
   "${COM_BASE}/misc/truncateFile.c"
+  "${COM_BASE}/misc/ipAddrToAsciiAsynchronous.cpp"
+  "${COM_BASE}/misc/epicsUnitTest.c"
   
   "${COM_BASE}/O.Common/asLib.c"
   #"${COM_BASE}/O.Common/asLib_lex.c"
@@ -142,6 +142,29 @@ if(WIN32)
     "${COM_BASE}/osi/os/WIN32/setThreadName.cpp"
     "${COM_BASE}/osi/os/WIN32/systemCallIntMech.cpp"
   )
+elseif(UNIX AND NOT APPLE)
+  list(APPEND COM_SOURCE_FILES
+    "${COM_BASE}/osi/os/Linux/osdBackTrace.cpp"
+    #"${COM_BASE}/osi/os/Linux/osdFindAddr.c"
+    #"${COM_BASE}/osi/os/Linux/osdElfFindAddr.c"
+    "${COM_BASE}/osi/os/Linux/osdSockUnsentCount.c"
+    "${COM_BASE}/osi/os/Linux/osdThreadExtra.c"
+
+    #"${COM_BASE}/osi/os/posix/osdElfFindAddr.c"
+    # Missing from Linux... copied from WIN32
+    "${COM_BASE}/osi/os/Linux/osdMutex.c"
+    "${COM_BASE}/osi/os/Linux/osdEvent.c"
+    #"${COM_BASE}/osi/os/Linux/osdExecinfoBackTrace.cpp"
+  )
+elseif(APPLE)
+  list(APPEND COM_SOURCE_FILES
+    "${COM_BASE}/osi/os/Darwin/osdBackTrace.cpp"
+    "${COM_BASE}/osi/os/Darwin/osdFindAddr.c"
+    "${COM_BASE}/osi/os/Darwin/osdSockAddrReuse.cpp"
+    "${COM_BASE}/osi/os/Darwin/osdSockUnsentCount.c"
+    "${COM_BASE}/osi/os/Darwin/osdThreadExtra.c"
+    "${COM_BASE}/osi/os/Darwin/osdTime.cpp"
+  )
 endif()
 
 set(COM_HEADER_FILES
@@ -155,15 +178,15 @@ set(COM_HEADER_FILES
   
   "${COM_BASE}/cvtFast/cvtFast.h"
   
-  "${COM_BASE}/cxxTemplates/epicsGuard.h"
-  "${COM_BASE}/cxxTemplates/epicsOnce.h"
-  "${COM_BASE}/cxxTemplates/epicsSingleton.h"
-  "${COM_BASE}/cxxTemplates/resourceLib.h"
-  "${COM_BASE}/cxxTemplates/tsBTree.h"
-  "${COM_BASE}/cxxTemplates/tsDLList.h"
-  "${COM_BASE}/cxxTemplates/tsFreeList.h"
-  "${COM_BASE}/cxxTemplates/tsMinMax.h"
-  "${COM_BASE}/cxxTemplates/tsSLList.h"
+  #"${COM_BASE}/cxxTemplates/epicsGuard.h"
+  #"${COM_BASE}/cxxTemplates/epicsOnce.h"
+  #"${COM_BASE}/cxxTemplates/epicsSingleton.h"
+  #"${COM_BASE}/cxxTemplates/resourceLib.h"
+  #"${COM_BASE}/cxxTemplates/tsBTree.h"
+  #"${COM_BASE}/cxxTemplates/tsDLList.h"
+  #"${COM_BASE}/cxxTemplates/tsFreeList.h"
+  #"${COM_BASE}/cxxTemplates/tsMinMax.h"
+  #"${COM_BASE}/cxxTemplates/tsSLList.h"
   
   "${COM_BASE}/dbmf/dbmf.h"
   
@@ -274,6 +297,33 @@ if(WIN32)
     "${COM_BASE}/osi/compiler/msvc/compilerSpecific.h"
     "${COM_BASE}/osi/compiler/msvc/epicsAtomicCD.h"
   )
+elseif(UNIX AND NOT APPLE)
+  list(APPEND COM_HEADER_FILES
+    "${COM_BASE}/osi/os/Linux/osdSock.h"
+    "${COM_BASE}/osi/os/Linux/osdThread.h"
+    "${COM_BASE}/osi/os/Linux/osdTime.h"
+    "${COM_BASE}/osi/os/Linux/osdWireConfig.h"
+    "${COM_BASE}/osi/os/Linux/osiFileName.h"
+    "${COM_BASE}/osi/os/Linux/osiUnistd.h"
+
+    "${COM_BASE}/osi/compiler/gcc/compilerSpecific.h"
+    "${COM_BASE}/osi/compiler/gcc/epicsAtomicCD.h"
+    
+    # missing... copied from WIN32
+    "${COM_BASE}/osi/os/Linux/osdStrtod.h"
+    "${COM_BASE}/osi/os/Linux/epicsMath.h"
+  )
+elseif(APPLE)
+  list(APPEND COM_HEADER_FILES
+    "${COM_BASE}/osi/os/Darwin/osdSock.h"
+    "${COM_BASE}/osi/os/Darwin/osdTime.h"
+    "${COM_BASE}/osi/os/Darwin/osiFileName.h"
+
+    "${COM_BASE}/osi/compiler/clang/compilerSpecific.h"
+    "${COM_BASE}/osi/compiler/clang/epicsAtomicCD.h"
+    # missing from Darwin
+    
+)
 endif()
 
 # Add the COM library target
@@ -305,7 +355,8 @@ if(WIN32)
   target_include_directories(COM PUBLIC "${COM_BASE}/compiler/msvc")
 elseif(UNIX AND NOT APPLE)
   target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/Linux")
-  target_include_directories(COM PUBLIC "${COM_BASE}/compiler/clang")
+  #target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/posix")
+  target_include_directories(COM PUBLIC "${COM_BASE}/compiler/gcc")
 elseif(APPLE)
   target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/Darwin")
   target_include_directories(COM PUBLIC "${COM_BASE}/compiler/clang")
@@ -440,11 +491,21 @@ if(WIN32)
   target_link_libraries(CA PRIVATE Ws2_32)
 elseif(UNIX AND NOT APPLE)
   # Define Linux-specific options here
+  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
+  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(COM PRIVATE "COM_LINUX_BUILD")
+  
+  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
+  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(CA PRIVATE "CA_LINUX_BUILD")
 elseif(APPLE)
   # Define macOS-specific options here
+  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
+  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(COM PRIVATE "COM_MAC_BUILD")
+
+  target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
+  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
   target_compile_definitions(CA PRIVATE "CA_MAC_BUILD")
 endif()
 
