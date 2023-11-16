@@ -32,7 +32,7 @@ set(COM_SOURCE_FILES
   
   #"${COM_BASE}/cxxTemplates/resourceLib.cpp"
   #"${COM_BASE}/cxxTemplates/epicsOnce.cpp"
-  #"${COM_BASE}/cxxTemplates/epicsSingletonMutex.cpp"
+  "${COM_BASE}/cxxTemplates/epicsSingletonMutex.cpp"
   
   "${COM_BASE}/dbmf/dbmf.c"
   
@@ -178,9 +178,9 @@ set(COM_HEADER_FILES
   
   "${COM_BASE}/cvtFast/cvtFast.h"
   
-  #"${COM_BASE}/cxxTemplates/epicsGuard.h"
+  "${COM_BASE}/cxxTemplates/epicsGuard.h"
   #"${COM_BASE}/cxxTemplates/epicsOnce.h"
-  #"${COM_BASE}/cxxTemplates/epicsSingleton.h"
+  "${COM_BASE}/cxxTemplates/epicsSingleton.h"
   #"${COM_BASE}/cxxTemplates/resourceLib.h"
   #"${COM_BASE}/cxxTemplates/tsBTree.h"
   #"${COM_BASE}/cxxTemplates/tsDLList.h"
