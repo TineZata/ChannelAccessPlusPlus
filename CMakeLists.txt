@@ -100,6 +100,7 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/osi/os/default/osdSpin.c"
   "${COM_BASE}/osi/os/default/osdThreadHooks.c"
   "${COM_BASE}/osi/os/default/osdAssert.c"
+  "${COM_BASE}/osi/os/default/osdNetIntf.c"
   
   "${COM_BASE}/pool/poolJob.c"
   "${COM_BASE}/pool/threadPool.c"
@@ -149,6 +150,13 @@ elseif(UNIX AND NOT APPLE)
     #"${COM_BASE}/osi/os/Linux/osdElfFindAddr.c"
     "${COM_BASE}/osi/os/Linux/osdSockUnsentCount.c"
     "${COM_BASE}/osi/os/Linux/osdThreadExtra.c"
+    "${COM_BASE}/osi/os/Linux/osdThread.c"
+    "${COM_BASE}/osi/os/Linux/osdTime.cpp"
+    "${COM_BASE}/osi/os/Linux/osdSock.c"
+    "${COM_BASE}/osi/os/Linux/osdSignal.cpp"
+    "${COM_BASE}/osi/os/Linux/osdProcess.c"
+    "${COM_BASE}/osi/os/Linux/osdSockAddrReuse.cpp"
+    "${COM_BASE}/osi/os/Linux/osdStdio.c"
 
     #"${COM_BASE}/osi/os/posix/osdElfFindAddr.c"
     # Missing from Linux... copied from WIN32
@@ -228,6 +236,7 @@ set(COM_HEADER_FILES
   "${COM_BASE}/misc/shareLib.h"
   "${COM_BASE}/misc/testMain.h"
   "${COM_BASE}/misc/unixFileName.h"
+  "${COM_BASE}/misc/dbDefs.h"
   
   "${COM_BASE}/O.Common/epicsVersion.h"
   
