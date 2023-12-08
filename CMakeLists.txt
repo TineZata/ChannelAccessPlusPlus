@@ -104,7 +104,7 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/osi/os/default/osdSpin.c"
   "${COM_BASE}/osi/os/default/osdThreadHooks.c"
   "${COM_BASE}/osi/os/default/osdAssert.c"
-  "${COM_BASE}/osi/os/default/osdNetIntf.c"
+  #"${COM_BASE}/osi/os/default/osdNetIntf.c"
   
   "${COM_BASE}/pool/poolJob.c"
   "${COM_BASE}/pool/threadPool.c"
@@ -163,10 +163,10 @@ elseif(UNIX AND NOT APPLE)
     "${COM_BASE}/osi/os/Linux/osdStdio.c"
 
     #"${COM_BASE}/osi/os/posix/osdElfFindAddr.c"
-    # Missing from Linux... copied from WIN32
+    # Missing from Linux... copied from somewhere else
     "${COM_BASE}/osi/os/Linux/osdMutex.c"
     "${COM_BASE}/osi/os/Linux/osdEvent.c"
-    #"${COM_BASE}/osi/os/Linux/osdExecinfoBackTrace.cpp"
+    "${COM_BASE}/osi/os/Linux/osdNetIntf.c"
   )
 elseif(APPLE)
   list(APPEND COM_SOURCE_FILES
