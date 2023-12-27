@@ -14,58 +14,41 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Define the BASE directory for the project
 set(CA_BASE "${CMAKE_CURRENT_SOURCE_DIR}/CA")
-set(COM_BASE "${CMAKE_CURRENT_SOURCE_DIR}/COM")
+set(COM_BASE "${CA_BASE}/COM")
 
 # Set the RPATH
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
-message("TZ: COM_BASE is set to: ${COM_BASE}")
-
 # Define source files and headers for COM
-set(COM_SOURCE_FILES 
+set(CA_SOURCE_FILES 
   #"${COM_BASE}/as/asLibRoutines.c"
   #"${COM_BASE}/as/asTrapWrite.c"
-
   "${COM_BASE}/bucketLib/bucketLib.c"
-  
   "${COM_BASE}/calc/postfix.c"
   "${COM_BASE}/calc/calcPerform.c"
-  
   "${COM_BASE}/cvtFast/cvtFast.c"
-  
   #"${COM_BASE}/cxxTemplates/resourceLib.cpp"
   #"${COM_BASE}/cxxTemplates/epicsOnce.cpp"
   "${COM_BASE}/cxxTemplates/epicsSingletonMutex.cpp"
-  
   "${COM_BASE}/dbmf/dbmf.c"
-  
   "${COM_BASE}/ellLib/ellLib.c"
   "${COM_BASE}/ellLib/ellSort.c"
-  
   "${COM_BASE}/env/envSubr.c"
-  
   "${COM_BASE}/error/errlog.c"
   "${COM_BASE}/error/errSymLib.c"
-
   "${COM_BASE}/fdmgr/fdManager.cpp"
   "${COM_BASE}/fdmgr/fdmgr.cpp"
-  
   "${COM_BASE}/freeList/freeListLib.c"
-  
   "${COM_BASE}/gpHash/gpHashLib.c"
-
   "${COM_BASE}/iocsh/iocsh.cpp"
   "${COM_BASE}/iocsh/libComRegister.c"
   "${COM_BASE}/iocsh/registry.c"
-
   "${COM_BASE}/log/iocLog.c"
   "${COM_BASE}/log/logClient.c"
-  
   "${COM_BASE}/macLib/macCore.c"
   "${COM_BASE}/macLib/macEnv.c"
   "${COM_BASE}/macLib/macUtil.c"
-  
   "${COM_BASE}/misc/alarmString.c"
   "${COM_BASE}/misc/aToIPAddr.c"
   "${COM_BASE}/misc/adjustment.c"
@@ -76,13 +59,11 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/misc/epicsString.c"
   "${COM_BASE}/misc/truncateFile.c"
   "${COM_BASE}/misc/ipAddrToAsciiAsynchronous.cpp"
-  "${COM_BASE}/misc/epicsUnitTest.c"
-  
+  "${COM_BASE}/misc/epicsUnitTest.c" 
   "${COM_BASE}/O.Common/asLib.c"
   #"${COM_BASE}/O.Common/asLib_lex.c"
   "${COM_BASE}/O.Common/envData.c"
   "${COM_BASE}/O.Common/errSymTbl.c"
-
   "${COM_BASE}/osi/devLibVME.c"
   "${COM_BASE}/osi/epicsEvent.cpp"
   "${COM_BASE}/osi/epicsGeneralTime.c"
@@ -105,25 +86,20 @@ set(COM_SOURCE_FILES
   "${COM_BASE}/osi/os/default/osdThreadHooks.c"
   "${COM_BASE}/osi/os/default/osdAssert.c"
   #"${COM_BASE}/osi/os/default/osdNetIntf.c"
-  
   "${COM_BASE}/pool/poolJob.c"
   "${COM_BASE}/pool/threadPool.c"
-
   "${COM_BASE}/ring/epicsRingBytes.c"
   "${COM_BASE}/ring/epicsRingPointer.cpp"
-
   "${COM_BASE}/taskwd/taskwd.c"
-
   "${COM_BASE}/timer/epicsTimer.cpp"
   "${COM_BASE}/timer/timer.cpp"
   "${COM_BASE}/timer/timerQueue.cpp"
   "${COM_BASE}/timer/timerQueueActive.cpp"
   "${COM_BASE}/timer/timerQueueActiveMgr.cpp"
   "${COM_BASE}/timer/timerQueuePassive.cpp"
-
 )
 if(WIN32)
-  list(APPEND COM_SOURCE_FILES 
+  list(APPEND CA_SOURCE_FILES 
     "${COM_BASE}/osi/os/WIN32/epicsGetopt.c"
     "${COM_BASE}/osi/os/WIN32/epicsSocketConvertErrnoToString.cpp"
     "${COM_BASE}/osi/os/WIN32/epicsTempFile.cpp"
@@ -148,7 +124,7 @@ if(WIN32)
     "${COM_BASE}/osi/os/WIN32/systemCallIntMech.cpp"
   )
 elseif(UNIX AND NOT APPLE)
-  list(APPEND COM_SOURCE_FILES
+  list(APPEND CA_SOURCE_FILES
     "${COM_BASE}/osi/os/Linux/osdBackTrace.cpp"
     #"${COM_BASE}/osi/os/Linux/osdFindAddr.c"
     #"${COM_BASE}/osi/os/Linux/osdElfFindAddr.c"
@@ -161,7 +137,6 @@ elseif(UNIX AND NOT APPLE)
     "${COM_BASE}/osi/os/Linux/osdProcess.c"
     "${COM_BASE}/osi/os/Linux/osdSockAddrReuse.cpp"
     "${COM_BASE}/osi/os/Linux/osdStdio.c"
-
     #"${COM_BASE}/osi/os/posix/osdElfFindAddr.c"
     # Missing from Linux... copied from somewhere else
     "${COM_BASE}/osi/os/Linux/osdMutex.c"
@@ -169,7 +144,7 @@ elseif(UNIX AND NOT APPLE)
     "${COM_BASE}/osi/os/Linux/osdNetIntf.c"
   )
 elseif(APPLE)
-  list(APPEND COM_SOURCE_FILES
+  list(APPEND CA_SOURCE_FILES
     "${COM_BASE}/osi/os/Darwin/osdBackTrace.cpp"
     "${COM_BASE}/osi/os/Darwin/osdFindAddr.c"
     "${COM_BASE}/osi/os/Darwin/osdSockAddrReuse.cpp"
@@ -179,17 +154,13 @@ elseif(APPLE)
   )
 endif()
 
-set(COM_HEADER_FILES
+set(CA_HEADER_FILES
   "${COM_BASE}/as/asLib.h"
   "${COM_BASE}/as/asTrapWrite.h"
-
   "${COM_BASE}/bucketLib/bucketLib.h"
-
   "${COM_BASE}/calc/postfix.h"
   "${COM_BASE}/calc/postfixPvt.h"
-  
   "${COM_BASE}/cvtFast/cvtFast.h"
-  
   "${COM_BASE}/cxxTemplates/epicsGuard.h"
   #"${COM_BASE}/cxxTemplates/epicsOnce.h"
   "${COM_BASE}/cxxTemplates/epicsSingleton.h"
@@ -199,34 +170,23 @@ set(COM_HEADER_FILES
   #"${COM_BASE}/cxxTemplates/tsFreeList.h"
   #"${COM_BASE}/cxxTemplates/tsMinMax.h"
   #"${COM_BASE}/cxxTemplates/tsSLList.h"
-  
   "${COM_BASE}/dbmf/dbmf.h"
-  
   "${COM_BASE}/ellLib/ellLib.h"
-  
   "${COM_BASE}/env/envDefs.h"
-  
   "${COM_BASE}/error/errlog.h"
   "${COM_BASE}/error/errMdef.h"
   "${COM_BASE}/error/error.h"
   "${COM_BASE}/error/errSymTbl.h"
-
   "${COM_BASE}/fdmgr/fdManager.h"
   "${COM_BASE}/fdmgr/fdmgr.h"
-  
   "${COM_BASE}/freeList/freeList.h"
-  
   "${COM_BASE}/gpHash/gpHash.h"
-
   "${COM_BASE}/iocsh/iocsh.h"
   "${COM_BASE}/iocsh/libComRegister.h"
   "${COM_BASE}/iocsh/registry.h"
-
   "${COM_BASE}/log/iocLog.h"
   "${COM_BASE}/log/logClient.h"
-  
   "${COM_BASE}/macLib/macLib.h"
-
   "${COM_BASE}/misc/adjustment.h"
   "${COM_BASE}/misc/alarmString.h"
   "${COM_BASE}/misc/cantProceed.h"
@@ -241,9 +201,7 @@ set(COM_HEADER_FILES
   "${COM_BASE}/misc/testMain.h"
   "${COM_BASE}/misc/unixFileName.h"
   "${COM_BASE}/misc/dbDefs.h"
-  
   "${COM_BASE}/O.Common/epicsVersion.h"
-  
   "${COM_BASE}/osi/compilerDependencies.h"
   "${COM_BASE}/osi/devLib.h"
   "${COM_BASE}/osi/devLibVME.h"
@@ -277,20 +235,16 @@ set(COM_HEADER_FILES
   "${COM_BASE}/osi/os/default/osdInterrupt.h"
   "${COM_BASE}/osi/os/default/epicsReadline.h"
   "${COM_BASE}/osi/os/default/osdMessageQueue.h"
-
   "${COM_BASE}/pool/poolPriv.h"
-
   "${COM_BASE}/ring/epicsRingBytes.h"
   "${COM_BASE}/ring/epicsRingPointer.h"
-
   "${COM_BASE}/taskwd/taskwd.h"
-
   "${COM_BASE}/timer/epicsTimer.h"
   "${COM_BASE}/timer/timerPrivate.h"
 )
 
 if(WIN32)
-  list(APPEND COM_HEADER_FILES 
+  list(APPEND CA_HEADER_FILES 
     "${COM_BASE}/osi/os/WIN32/epicsAtomicMS.h"
     "${COM_BASE}/osi/os/WIN32/epicsAtomicOSD.h"
     "${COM_BASE}/osi/os/WIN32/epicsGetopt.h"
@@ -306,32 +260,28 @@ if(WIN32)
     "${COM_BASE}/osi/os/WIN32/osdWireConfig.h"
     "${COM_BASE}/osi/os/WIN32/osiFileName.h"
     "${COM_BASE}/osi/os/WIN32/osiUnistd.h"
-
     "${COM_BASE}/osi/compiler/msvc/compilerSpecific.h"
     "${COM_BASE}/osi/compiler/msvc/epicsAtomicCD.h"
   )
 elseif(UNIX AND NOT APPLE)
-  list(APPEND COM_HEADER_FILES
+  list(APPEND CA_HEADER_FILES
     "${COM_BASE}/osi/os/Linux/osdSock.h"
     "${COM_BASE}/osi/os/Linux/osdThread.h"
     "${COM_BASE}/osi/os/Linux/osdTime.h"
     "${COM_BASE}/osi/os/Linux/osdWireConfig.h"
     "${COM_BASE}/osi/os/Linux/osiFileName.h"
     "${COM_BASE}/osi/os/Linux/osiUnistd.h"
-
     "${COM_BASE}/osi/compiler/gcc/compilerSpecific.h"
     "${COM_BASE}/osi/compiler/gcc/epicsAtomicCD.h"
-    
     # missing... copied from WIN32
     "${COM_BASE}/osi/os/Linux/osdStrtod.h"
     "${COM_BASE}/osi/os/Linux/epicsMath.h"
   )
 elseif(APPLE)
-  list(APPEND COM_HEADER_FILES
+  list(APPEND CA_HEADER_FILES
     "${COM_BASE}/osi/os/Darwin/osdSock.h"
     "${COM_BASE}/osi/os/Darwin/osdTime.h"
     "${COM_BASE}/osi/os/Darwin/osiFileName.h"
-
     "${COM_BASE}/osi/compiler/clang/compilerSpecific.h"
     "${COM_BASE}/osi/compiler/clang/epicsAtomicCD.h"
     # missing from Darwin
@@ -339,50 +289,8 @@ elseif(APPLE)
 )
 endif()
 
-# Add the COM library target
-add_library(COM SHARED ${COM_SOURCE_FILES} ${COM_HEADER_FILES})
-
-# Manually add directories to the COM target
-target_include_directories(COM PUBLIC "${COM_BASE}/as")
-target_include_directories(COM PUBLIC "${COM_BASE}/bucketLib")
-target_include_directories(COM PUBLIC "${COM_BASE}/calc")
-target_include_directories(COM PUBLIC "${COM_BASE}/cppStd")
-target_include_directories(COM PUBLIC "${COM_BASE}/cvtFast")
-target_include_directories(COM PUBLIC "${COM_BASE}/cxxTemplates")
-target_include_directories(COM PUBLIC "${COM_BASE}/dbmf")
-target_include_directories(COM PUBLIC "${COM_BASE}/ellLib")
-target_include_directories(COM PUBLIC "${COM_BASE}/env")
-target_include_directories(COM PUBLIC "${COM_BASE}/error")
-target_include_directories(COM PUBLIC "${COM_BASE}/fdmgr")
-target_include_directories(COM PUBLIC "${COM_BASE}/freeList")
-target_include_directories(COM PUBLIC "${COM_BASE}/gpHash")
-target_include_directories(COM PUBLIC "${COM_BASE}/iocsh")
-target_include_directories(COM PUBLIC "${COM_BASE}/log")
-target_include_directories(COM PUBLIC "${COM_BASE}/macLib")
-target_include_directories(COM PUBLIC "${COM_BASE}/misc")
-target_include_directories(COM PUBLIC "${COM_BASE}/O.Common")
-target_include_directories(COM PUBLIC "${COM_BASE}/osi")
-target_include_directories(COM PUBLIC "${COM_BASE}/osi/compiler/default")
-if(WIN32)
-  target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/WIN32")
-  target_include_directories(COM PUBLIC "${COM_BASE}/compiler/msvc")
-elseif(UNIX AND NOT APPLE)
-  target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/Linux")
-  #target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/posix")
-  target_include_directories(COM PUBLIC "${COM_BASE}/compiler/gcc")
-elseif(APPLE)
-  target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/Darwin")
-  target_include_directories(COM PUBLIC "${COM_BASE}/compiler/clang")
-endif()
-target_include_directories(COM PUBLIC "${COM_BASE}/osi/os/default")
-target_include_directories(COM PUBLIC "${COM_BASE}/pool")
-target_include_directories(COM PUBLIC "${COM_BASE}/ring")
-target_include_directories(COM PUBLIC "${COM_BASE}/taskwd")
-target_include_directories(COM PUBLIC "${COM_BASE}/timer")
-target_include_directories(COM PUBLIC "${COM_BASE}/iocsh")
-
 # Define source files and headers for CA using file globbing
-set(CA_SOURCE_FILES
+list(APPEND CA_SOURCE_FILES
 "${CA_BASE}/access.cpp"
 "${CA_BASE}/acctstRegister.cpp"
 "${CA_BASE}/acctstMain.c"
@@ -434,7 +342,7 @@ set(CA_SOURCE_FILES
 "${CA_BASE}/udpiiu.cpp"
 )
 
-set(CA_HEADER_FILES 
+list(APPEND CA_HEADER_FILES 
 "${CA_BASE}/addrList.h"
 "${CA_BASE}/autoPtrDestroy.h"
 "${CA_BASE}/autoPtrFreeList.h"
@@ -481,49 +389,70 @@ set(CA_HEADER_FILES
 add_library(CA SHARED ${CA_SOURCE_FILES} ${CA_HEADER_FILES})
 
 # Manually add directories to the CA target
-target_include_directories(CA PUBLIC "${CA_BASE}")
+target_include_directories(CA PUBLIC "${COM_BASE}/as")
+target_include_directories(CA PUBLIC "${COM_BASE}/bucketLib")
+target_include_directories(CA PUBLIC "${COM_BASE}/calc")
+target_include_directories(CA PUBLIC "${COM_BASE}/cppStd")
+target_include_directories(CA PUBLIC "${COM_BASE}/cvtFast")
+target_include_directories(CA PUBLIC "${COM_BASE}/cxxTemplates")
+target_include_directories(CA PUBLIC "${COM_BASE}/dbmf")
+target_include_directories(CA PUBLIC "${COM_BASE}/ellLib")
+target_include_directories(CA PUBLIC "${COM_BASE}/env")
+target_include_directories(CA PUBLIC "${COM_BASE}/error")
+target_include_directories(CA PUBLIC "${COM_BASE}/fdmgr")
+target_include_directories(CA PUBLIC "${COM_BASE}/freeList")
+target_include_directories(CA PUBLIC "${COM_BASE}/gpHash")
+target_include_directories(CA PUBLIC "${COM_BASE}/iocsh")
+target_include_directories(CA PUBLIC "${COM_BASE}/log")
+target_include_directories(CA PUBLIC "${COM_BASE}/macLib")
+target_include_directories(CA PUBLIC "${COM_BASE}/misc")
+target_include_directories(CA PUBLIC "${COM_BASE}/O.Common")
+target_include_directories(CA PUBLIC "${COM_BASE}/osi")
+target_include_directories(CA PUBLIC "${COM_BASE}/osi/compiler/default")
+if(WIN32)
+  target_include_directories(CA PUBLIC "${COM_BASE}/osi/os/WIN32")
+  target_include_directories(CA PUBLIC "${COM_BASE}/compiler/msvc")
+elseif(UNIX AND NOT APPLE)
+  target_include_directories(CA PUBLIC "${COM_BASE}/osi/os/Linux")
+  #target_include_directories(CA PUBLIC "${COM_BASE}/osi/os/posix")
+  target_include_directories(CA PUBLIC "${COM_BASE}/compiler/gcc")
+elseif(APPLE)
+  target_include_directories(CA PUBLIC "${COM_BASE}/osi/os/Darwin")
+  target_include_directories(CA PUBLIC "${COM_BASE}/compiler/clang")
+endif()
+target_include_directories(CA PUBLIC "${COM_BASE}/osi/os/default")
+target_include_directories(CA PUBLIC "${COM_BASE}/pool")
+target_include_directories(CA PUBLIC "${COM_BASE}/ring")
+target_include_directories(CA PUBLIC "${COM_BASE}/taskwd")
+target_include_directories(CA PUBLIC "${COM_BASE}/timer")
+target_include_directories(CA PUBLIC "${COM_BASE}/iocsh")
 
-# Link CA against COM
-target_link_libraries(CA PRIVATE COM)
+target_include_directories(CA PUBLIC "${CA_BASE}")
+target_include_directories(CA PUBLIC "${COM_BASE}")
 
 # Platform-specific compiler options and preprocessor definitions
 if(WIN32)
-  # Define Windows-specific options here
-  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
-  #target_compile_definitions(COM PRIVATE "EPICS_CALL_DLL")
-  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
-  target_compile_definitions(COM PRIVATE "COM_WINDOWS_BUILD")
-  set_target_properties(COM PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-  target_link_libraries(COM PRIVATE Ws2_32)
-
   target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__LITTLE_ENDIAN")
-  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
-  #target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
+  #target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(CA PRIVATE "CA_WINDOWS_BUILD")
   set_target_properties(CA PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
   target_link_libraries(CA PRIVATE Ws2_32)
 elseif(UNIX AND NOT APPLE)
   # Define Linux-specific options here
-  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
-  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
-  target_compile_definitions(COM PRIVATE "COM_LINUX_BUILD")
-  
   target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
-  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  #target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(CA PRIVATE "CA_LINUX_BUILD")
 elseif(APPLE)
   # Define macOS-specific options here
-  target_compile_definitions(COM PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
-  target_compile_definitions(COM PRIVATE "EPICS_BUILD_DLL")
-  target_compile_definitions(COM PRIVATE "COM_MAC_BUILD")
-
   target_compile_definitions(CA PRIVATE "__BYTE_ORDER=__BIG_ENDIAN")
-  target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  #target_compile_definitions(CA PRIVATE "EPICS_CALL_DLL")
+  target_compile_definitions(CA PRIVATE "EPICS_BUILD_DLL")
   target_compile_definitions(CA PRIVATE "CA_MAC_BUILD")
 endif()
 
 # Set the LINKER_LANGUAGE property for the target
-set_target_properties(COM PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(CA PROPERTIES LINKER_LANGUAGE CXX)
 
 # Enable Hot Reload for MSVC compilers if supported.
